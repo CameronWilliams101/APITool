@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace APITool
@@ -10,21 +11,26 @@ namespace APITool
     {
         public string url;
         public List<Hello> list;
+        public HttpClient httpClient;
 
         public APIClient()
         {
             url = "http://192.168.1.109:54949/hello";
             list = new List<Hello>();
+            httpClient = new HttpClient();
         }
 
         public async Task GetAsync()
         {
-            var httpClient = new HttpClient();
+            list.Clear();
             var APIString = await httpClient.GetStringAsync(url);
 
             if (APIString == "[]")
             {
-                Console.WriteLine("Empty");
+                var orgColour = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("WebAPI list is Empty");
+                Console.ForegroundColor = orgColour;
                 return;
             }
 
@@ -45,14 +51,20 @@ namespace APITool
             }
         }
 
-        public void Post()
+        public async Task<string> PostAsync(string name, int id)
         {
-
+            var json = "{\"Name\":\"" + name + "\",\"Id\":" + id.ToString() + "}";
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await httpClient.PostAsync(url, content);
+            return await response.Content.ReadAsStringAsync();
         }
 
-        public void Delete()
+        public async Task<string> DeleteAsync(string name, int id)
         {
-
+            var json = "{\"Name\":\"" + name + "\",\"Id\":" + id.ToString() + "}";
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await httpClient.PostAsync(url + "/delete", content);
+            return await response.Content.ReadAsStringAsync();
         }
     }
 }

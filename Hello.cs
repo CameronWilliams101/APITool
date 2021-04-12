@@ -11,7 +11,7 @@ namespace APITool
 
         public override string ToString()
         {
-            return ($"[\"name\":\"{name}\",\"id\":\"{id}\"]");
+            return ($"-Name: {name}, ID: {id}");
         }
     }
 }
