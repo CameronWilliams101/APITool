@@ -52,14 +52,20 @@ namespace APITool
 
         public static async Task PostAsync()
         {
+            Console.Write("Enter Name:");
+            var name = Console.ReadLine();
+            Console.Write("Enter ID:");
+            var id = Console.ReadLine();
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(await apiClient.PostAsync("Cam", 1));
+            Console.WriteLine(await apiClient.PostAsync(name, Int32.Parse(id)));
             Console.ForegroundColor = orgColour;
         }
 
         public static async Task DeleteAsync()
         {
-            var response = await apiClient.DeleteAsync("Cam", 1);
+            Console.Write("Enter ID:");
+            var id = Console.ReadLine();
+            var response = await apiClient.DeleteAsync("Cam", Int32.Parse(id));
             if (response.Equals("Deleted Successfully"))
             {
                 Console.ForegroundColor = ConsoleColor.Green;
