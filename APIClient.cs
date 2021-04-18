@@ -66,5 +66,19 @@ namespace APITool
             var response = await httpClient.PostAsync(url + "/delete", content);
             return await response.Content.ReadAsStringAsync();
         }
+
+        public async Task<string> ListenAsync()
+        {
+            //Should probs make like a parralel task
+            var initial = await httpClient.GetStringAsync(url);
+            var current = initial;
+
+            while (initial.Equals(current))
+            {
+                current = await httpClient.GetStringAsync(url);
+            }
+
+            return "API Updated";
+        }
     }
 }

@@ -18,7 +18,8 @@ namespace APITool
                 Console.WriteLine("1) Get from API, to fill the list");
                 Console.WriteLine("2) Post");
                 Console.WriteLine("3) Delete");
-                Console.WriteLine("4) Print");
+                Console.WriteLine("4) Listen");
+                Console.WriteLine("5) Print");
                 Console.Write("Enter action:");
                 action = Console.ReadLine();
 
@@ -36,6 +37,9 @@ namespace APITool
                         await DeleteAsync();
                         break;
                     case "4":
+                        await ListenAsync();
+                        break;
+                    case "5":
                         Print();
                         break;
                 }
@@ -97,6 +101,15 @@ namespace APITool
             {
                 Console.WriteLine(hello);
             }
+            Console.ForegroundColor = orgColour;
+        }
+
+        public static async Task ListenAsync()
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("Listening...");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(await apiClient.ListenAsync());
             Console.ForegroundColor = orgColour;
         }
     }
