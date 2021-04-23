@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace APITool
@@ -10,7 +11,8 @@ namespace APITool
         static ConsoleColor orgColour = Console.ForegroundColor;
 
         public static async Task Main(string[] args)
-        {                      
+        {
+            Thread t = new Thread(Listen);
             do
             {
                 Console.WriteLine("---------------------------------------");
@@ -37,7 +39,8 @@ namespace APITool
                         await DeleteAsync();
                         break;
                     case "4":
-                        await ListenAsync();
+                        t.Start();
+                        Thread.Sleep(500);
                         break;
                     case "5":
                         Print();
@@ -104,12 +107,14 @@ namespace APITool
             Console.ForegroundColor = orgColour;
         }
 
-        public static async Task ListenAsync()
+        public static void Listen()
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Listening...");
+            Console.ForegroundColor = orgColour;
+            var result = apiClient.ListenAsync().GetAwaiter().GetResult();
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(await apiClient.ListenAsync());
+            Console.WriteLine(result);
             Console.ForegroundColor = orgColour;
         }
     }

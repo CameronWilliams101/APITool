@@ -69,7 +69,6 @@ namespace APITool
 
         public async Task<string> ListenAsync()
         {
-            //Should probs make like a parralel task
             var initial = await httpClient.GetStringAsync(url);
             var current = initial;
 
