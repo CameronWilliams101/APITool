@@ -9,10 +9,10 @@ namespace APITool
         static APIClient apiClient = new APIClient();
         static string action;
         static ConsoleColor orgColour = Console.ForegroundColor;
+        static Thread t;
 
         public static async Task Main(string[] args)
-        {
-            Thread t = new Thread(Listen);
+        {            
             do
             {
                 Console.WriteLine("---------------------------------------");
@@ -39,8 +39,16 @@ namespace APITool
                         await DeleteAsync();
                         break;
                     case "4":
-                        t.Start();
-                        Thread.Sleep(500);
+                        if(t == null || t.IsAlive == false)
+                        {
+                            t = new Thread(Listen);
+                            t.Start();
+                            Thread.Sleep(500);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Already listening");
+                        }
                         break;
                     case "5":
                         Print();
